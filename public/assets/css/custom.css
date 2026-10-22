@@ -1,0 +1,17 @@
+/*
+Template Name: Velzon - Admin & Dashboard Template
+Author: Themesbrand
+Website: https://themesbrand.com/
+Contact: support@themesbrand.com
+File: Custom Css File
+*/
+
+/* =============================================
+   Required Field Indicator
+   ============================================= */
+.form-label.required::after,
+.col-form-label.required::after {
+  content: ' *';
+  color: #f06548;
+  font-weight: bold;
+}

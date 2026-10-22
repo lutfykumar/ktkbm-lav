@@ -1,0 +1,27 @@
+.auth-one-bg {
+  background-image: url("/assets/images/img-01.jpg") !important;
+}
+
+.auth-one-bg .bg-overlay {
+  opacity: 0.8;
+}
+
+@media only screen and (max-width: 768px) {
+  .auth-img {
+    height: 100px;
+  }
+
+  .auth-title {
+    font-size: 20px;
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .auth-img {
+    height: 140px;
+  }
+
+  .auth-title {
+    font-size: 30px;
+  }
+}
