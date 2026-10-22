@@ -82,11 +82,7 @@
           <label class="form-label">Pilih Status {{ $title ?? 'Work Order' }}</label>
           <div>
             <div class="form-check form-radio-success form-check-inline mb-3">
-              <input class="form-check-input" type="radio" name="u_status" id="u_typeA" value="hide" {{ $model->STATUS == 'hide' ? 'checked' : '' }}>
-              <label class="form-check-label" for="u_typeA">Hide</label>
-            </div>
-            <div class="form-check form-radio-success form-check-inline mb-3">
-              <input class="form-check-input" type="radio" name="u_status" id="u_typeB" value="open" {{ ($model->STATUS == 'open' || !in_array($model->STATUS, ['hide', 'open', 'progress', 'review', 'done'])) ? 'checked' : '' }}>
+              <input class="form-check-input" type="radio" name="u_status" id="u_typeB" value="open" {{ (!in_array($model->STATUS, ['progress', 'review', 'done'])) ? 'checked' : '' }}>
               <label class="form-check-label" for="u_typeB">Open</label>
             </div>
             <div class="form-check form-radio-success form-check-inline mb-3">

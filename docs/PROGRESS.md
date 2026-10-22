@@ -1,6 +1,20 @@
 # TKBM Progress Tracker
 
-### [2026-10-22] chore: Inisialisasi Git Repository Lokal dan Initial Commit (`main`)
+### [2026-10-22] fix: Perbaikan Posisi Ikon Empty State agar Terpusat dan Sejajar dengan Teks
+
+- **Scope**: Report View, Dashboard Views, Workorder Detail View
+- **Files Changed**: `resources/views/report/workorder.blade.php`, `resources/views/dashboard.blade.php`, `resources/views/dashboard_pengawas.blade.php`, `resources/views/workorder/detail.blade.php`
+- **Summary**: Memperbaiki alignment ikon empty state (placeholder visual) pada tab Laporan Work Order dan Rekap Kegiatan Kapal dari posisi tepi kiri menjadi tepat di tengah (`d-flex flex-column align-items-center justify-content-center`) sehingga sejajar dan seragam dengan teks petunjuk di bawahnya, baik saat inisialisasi awal, saat reset filter, maupun saat data tidak ditemukan. Standarisasi container serupa juga diterapkan pada Dashboard dan Detail Work Order.
+- **Conversation ID**: f5bb48a4-b11d-421c-bb08-41a9c6f5dbee
+
+### [2026-10-22] fix: Review Komprehensif & Bug Fix Migrasi CI3 → Laravel 11
+
+- **Scope**: Workorder Module, Activity Module, Master Views, Docs
+- **Files Changed**: `resources/views/workorder/index.blade.php`, `resources/views/workorder/edit.blade.php`, `app/Http/Controllers/WorkorderController.php`, `app/Http/Controllers/ActivityController.php`, `resources/views/master/*/index.blade.php`, `resources/views/master/*/edit.blade.php`, `resources/views/master/email/index.blade.php`, `docs/migration/NEXT_STEPS.md`
+- **Summary**: Review menyeluruh pasca-migrasi menemukan dan memperbaiki 9 issue: (1) Hapus opsi status 'hide' dari form create WO, form edit WO, dan filter dropdown (sudah di-remove dari CI3 sebelumnya); (2) Fix referensi `'hide'` di `generateActionButtons()` controller; (3) Fix `ActivityController::update_status()` untuk include 'review' sebagai status valid; (4) Fix logic auto-set WO ke 'progress' saat laporan ditambahkan (sebelumnya hanya update jika pengawas belum terassign, sekarang juga update jika WO masih 'open'); (5) Replace 19 file master views dari `<?= base_url('assets/...') ?>` ke `{{ asset('assets/...') }}` Blade idiom; (6) Fix docs NEXT_STEPS.md path folder yang salah. Seluruh 58 tests tetap 100% PASSING.
+- **Conversation ID**: f5bb48a4-b11d-421c-bb08-41a9c6f5dbee
+
+
 
 - **Scope**: Version Control (`tkbm-lav/.git`, `.gitignore`)
 - **Files Changed**: `d:\www\tkbm-lav\.gitignore`, Git repository `main`

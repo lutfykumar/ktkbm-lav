@@ -86,10 +86,6 @@
                       <label class="form-label">Pilih Status {{ $title ?? 'Work Order' }}</label>
                       <div>
                         <div class="form-check form-radio-success form-check-inline mb-3">
-                          <input class="form-check-input" type="radio" name="status" id="typeA" value="hide">
-                          <label class="form-check-label" for="typeA">Hide</label>
-                        </div>
-                        <div class="form-check form-radio-success form-check-inline mb-3">
                           <input class="form-check-input" type="radio" name="status" id="typeB" value="open" checked>
                           <label class="form-check-label" for="typeB">Open</label>
                         </div>
@@ -153,7 +149,6 @@
               <label for="filter_status" class="form-label mb-1">Pilih Status</label>
               <select class="form-control select2 filter_status" id="filter_status" name="filter_status" style="width: 100%;">
                 <option value="">Pilih Salah Satu</option>
-                <option value="hide">Hide</option>
                 <option value="open">Open</option>
                 <option value="progress">Progress</option>
                 <option value="review">Menunggu Verifikasi (Review)</option>

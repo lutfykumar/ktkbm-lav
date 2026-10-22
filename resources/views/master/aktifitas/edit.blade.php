@@ -62,7 +62,7 @@
         </div>
       </div>
       <div class="col-sm-12 col-lg-6">
-        <img src="<?= base_url('assets/images/people.svg'); ?>" class="img-responsive d-none d-lg-block d-xl-block mx-auto" style="height:300px;" alt="roles_image">
+        <img src="{{ asset('assets/images/people.svg') }}" class="img-responsive d-none d-lg-block d-xl-block mx-auto" style="height:300px;" alt="roles_image">
       </div>
       <div class="col-lg-12">
         <div class="hstack gap-2 justify-content-center mt-3">

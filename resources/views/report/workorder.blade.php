@@ -322,9 +322,9 @@
 
             <!-- Document Container (dynamically rendered) -->
             <div id="documents_container">
-              <div class="text-center text-muted py-5">
-                <i class="fal fa-file-alt fa-3x mb-3 d-block"></i>
-                <p>Pilih filter dan klik <strong>Preview</strong> untuk menampilkan laporan</p>
+              <div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">
+                <i class="fal fa-file-alt fa-3x mb-3"></i>
+                <p class="mb-0">Pilih filter dan klik <strong>Preview</strong> untuk menampilkan laporan</p>
               </div>
             </div>
           </div>
@@ -361,9 +361,9 @@
 
             <!-- Rekap Kegiatan Kapal Content Container -->
             <div id="kegiatan_kapal_container">
-              <div class="text-center text-muted py-5">
-                <i class="fal fa-ship fa-3x mb-3 text-primary d-block"></i>
-                <p>Pilih Pelabuhan dan Bulan, lalu klik <strong>Preview</strong> untuk menampilkan Rekap Kegiatan Kapal</p>
+              <div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">
+                <i class="fal fa-ship fa-3x mb-3 text-primary"></i>
+                <p class="mb-0">Pilih Pelabuhan dan Bulan, lalu klik <strong>Preview</strong> untuk menampilkan Rekap Kegiatan Kapal</p>
               </div>
             </div>
           </div>
@@ -430,9 +430,9 @@
       $('#filter_client').val('').trigger('change');
       $('#filter_pengawas').val('').trigger('change');
       $('#documents_container').html(
-        '<div class="text-center text-muted py-5">' +
-        '<i class="fal fa-file-alt fa-3x mb-3 d-block"></i>' +
-        '<p>Pilih filter dan klik <strong>Preview</strong> untuk menampilkan laporan</p></div>'
+        '<div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">' +
+        '<i class="fal fa-file-alt fa-3x mb-3"></i>' +
+        '<p class="mb-0">Pilih filter dan klik <strong>Preview</strong> untuk menampilkan laporan</p></div>'
       );
     });
 
@@ -480,9 +480,9 @@
         chartKomoditasInstance = null;
       }
       $('#kegiatan_kapal_container').html(
-        '<div class="text-center text-muted py-5">' +
-        '<i class="fal fa-ship fa-3x mb-3 text-success d-block"></i>' +
-        '<p>Pilih Pelabuhan dan Bulan, lalu klik <strong>Preview</strong> untuk menampilkan Rekap Kegiatan Kapal</p>' +
+        '<div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">' +
+        '<i class="fal fa-ship fa-3x mb-3 text-success"></i>' +
+        '<p class="mb-0">Pilih Pelabuhan dan Bulan, lalu klik <strong>Preview</strong> untuk menampilkan Rekap Kegiatan Kapal</p>' +
         '</div>'
       );
     });
@@ -552,9 +552,9 @@
         if (res.status && res.documents) {
           if (res.documents.length === 0) {
             $('#documents_container').html(
-              '<div class="text-center text-muted py-5">' +
-              '<i class="fal fa-search fa-3x mb-3 text-warning d-block"></i>' +
-              '<p>Tidak ada data ditemukan untuk filter yang dipilih</p></div>'
+              '<div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">' +
+              '<i class="fal fa-search fa-3x mb-3 text-warning"></i>' +
+              '<p class="mb-0">Tidak ada data ditemukan untuk filter yang dipilih</p></div>'
             );
           } else {
             let html = '';

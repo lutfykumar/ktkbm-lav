@@ -8,7 +8,7 @@
 ## 🚀 How to Run and Test the Application
 
 ### 1. Jalankan Development Server
-Buka terminal di folder `d:\www\tkbm-lav\laravel-app` dan jalankan:
+Buka terminal di folder `d:\www\tkbm-lav` dan jalankan:
 ```bash
 php artisan serve
 ```

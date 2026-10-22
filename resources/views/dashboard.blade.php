@@ -215,8 +215,8 @@
                   <p class="text-muted mb-0">Total <strong>{{ $m_total }}</strong> Work Order bulan ini</p>
                 </div>
               @else
-                <div class="text-center text-muted py-5">
-                  <i class="fal fa-chart-pie fa-3x d-block mb-3 opacity-50"></i>
+                <div class="text-center text-muted py-5 d-flex flex-column align-items-center justify-content-center">
+                  <i class="fal fa-chart-pie fa-3x mb-3 opacity-50"></i>
                   <p class="mb-0">Belum ada data bulan ini</p>
                 </div>
               @endif

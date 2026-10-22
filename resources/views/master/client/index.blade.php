@@ -79,7 +79,7 @@
 
                   </div>
                   <div class="col-sm-12 col-lg-6 d-none d-lg-flex d-xl-flex align-items-center justify-content-center">
-                    <img src="<?= base_url('assets/images/people.svg'); ?>" style="height:400px;" alt="client_image">
+                    <img src="{{ asset('assets/images/people.svg') }}" style="height:400px;" alt="client_image">
                   </div>
                 </div>
               </form>

@@ -150,8 +150,8 @@ class WorkorderController extends Controller
         }
 
         $hasLaporan = !empty($data->total_laporan) && $data->total_laporan > 0;
-        $isOpenOrHide = in_array(strtolower($data->STATUS ?? ''), ['open', 'hide']);
-        if ($this->hasPerm($this->permissionRead) && (!$isOpenOrHide || $hasLaporan)) {
+        $isOpen = strtolower($data->STATUS ?? '') === 'open';
+        if ($this->hasPerm($this->permissionRead) && (!$isOpen || $hasLaporan)) {
             $action .= '<button type="button" class="btn btn-sm btn-primary btn-icon waves-effect waves-light me-1 btn-detail"
                             data-bs-toggle="tooltip" data-bs-placement="top"
                             title="Detail : ' . e($btnName) . '"

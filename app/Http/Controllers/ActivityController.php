@@ -135,7 +135,7 @@ class ActivityController extends Controller
             return $this->jsonResponse(false, 'ID tidak valid');
         }
 
-        if (!in_array($status, ['open', 'progress', 'done'])) {
+        if (!in_array($status, ['open', 'progress', 'review', 'done'])) {
             return $this->jsonResponse(false, 'Status tidak valid');
         }
 
@@ -232,14 +232,19 @@ class ActivityController extends Controller
                 $successCount++;
             }
 
-            if (empty($workorder->ID_PENGAWAS)) {
-                DB::table('t_work_order')->where('ID_WORK_ORDER', $woId)->update([
-                    'STATUS' => 'progress',
-                    'ID_PENGAWAS' => auth()->id(),
-                    'UPDATED_BY' => auth()->id(),
-                    'UPDATED_AT' => now(),
-                ]);
+            // Auto-set status ke 'progress' jika WO masih 'open'
+            // dan assign pengawas jika belum terassign
+            $updateData = [
+                'UPDATED_BY' => auth()->id(),
+                'UPDATED_AT' => now(),
+            ];
+            if (strtolower($workorder->STATUS ?? '') === 'open') {
+                $updateData['STATUS'] = 'progress';
             }
+            if (empty($workorder->ID_PENGAWAS)) {
+                $updateData['ID_PENGAWAS'] = auth()->id();
+            }
+            DB::table('t_work_order')->where('ID_WORK_ORDER', $woId)->update($updateData);
 
             DB::commit();
 

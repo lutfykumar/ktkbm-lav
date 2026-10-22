@@ -22,7 +22,7 @@
     </div>
   </div>
 </div>
-<script src="<?= base_url('assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js'); ?>"></script>
+<script src="{{ asset('assets/libs/@ckeditor/ckeditor5-build-classic/build/ckeditor.js') }}"></script>
 <script>
   const route_link = ip_server + 'master/email/';
 

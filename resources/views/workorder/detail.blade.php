@@ -223,8 +223,8 @@
               </table>
             </div>
           @else
-            <div class="text-center py-4">
-              <i class="fal fa-inbox fa-3x text-muted mb-3 d-block"></i>
+            <div class="text-center py-4 d-flex flex-column align-items-center justify-content-center">
+              <i class="fal fa-inbox fa-3x text-muted mb-3"></i>
               <p class="text-muted mb-0">Belum ada laporan aktivitas</p>
             </div>
           @endif
@@ -293,8 +293,8 @@
   </script>
 
 @else
-  <div class="text-center py-5">
-    <i class="fal fa-exclamation-triangle fa-3x text-warning mb-3 d-block"></i>
-    <h5 class="text-danger">Work Order tidak ditemukan</h5>
+  <div class="text-center py-5 d-flex flex-column align-items-center justify-content-center">
+    <i class="fal fa-exclamation-triangle fa-3x text-warning mb-3"></i>
+    <h5 class="text-danger mb-0">Work Order tidak ditemukan</h5>
   </div>
 @endif
