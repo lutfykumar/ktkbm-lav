@@ -386,7 +386,7 @@
   $(document).on('click', '.btn-change-password', function(e) {
     e.preventDefault();
     let id = $(this).data('id');
-    let username = $(this).data('username');
+    let username = $(this).data('username') || $(this).data('title') || '';
 
     $('#change_password_user_id').val(id);
     $('#change_password_username').text('Pengguna: ' + username);

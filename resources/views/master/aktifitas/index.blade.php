@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('content')
 <div class="row">
@@ -352,6 +352,48 @@
 
           if (res.status == true) {
             toast_success(res.msg)
+            $('#crudTable').DataTable().ajax.reload();
+          } else {
+            toast_error(res.msg);
+          }
+          btn.removeClass('disabled');
+        },
+        error: function() {
+          btn.removeClass('disabled');
+          toast_error('Terjadi kesalahan, silakan coba lagi');
+        }
+      });
+    } else {
+      btn.removeClass('disabled');
+    }
+  });
+
+  $(document).on('click', '.btn-restore', function(e) {
+    e.preventDefault();
+    let btn = $(this);
+    let id = btn.data('id');
+    let title = btn.data('title') || 'data ini';
+    let csrf_token = $('#' + csrf_name).val();
+    btn.addClass('disabled');
+
+    if (confirm('Anda yakin memulihkan data : ' + title + ' ?')) {
+      let postData = {
+        id: id
+      };
+      postData[csrf_name] = csrf_token;
+
+      $.ajax({
+        url: route_link + 'restore',
+        type: "POST",
+        dataType: "JSON",
+        data: postData,
+        success: function(res) {
+          if (res.csrf_token_name && res.csrf_token_hash) {
+            $('input[name="' + res.csrf_token_name + '"]').val(res.csrf_token_hash);
+          }
+
+          if (res.status == true) {
+            toast_success(res.msg);
             $('#crudTable').DataTable().ajax.reload();
           } else {
             toast_error(res.msg);

@@ -45,6 +45,7 @@
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/daterangepicker/daterangepicker.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/app.min.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/custom.min.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/toastify-js/src/toastify.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/filepond/filepond.min.css') }}" />
   <link rel="stylesheet" type="text/css" href="{{ asset('assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css') }}">
 
@@ -222,6 +223,7 @@
   <script src="{{ asset('assets/libs/daterangepicker/daterangepicker.js') }}"></script>
   <script src="{{ asset('assets/libs/cleave.js/cleave.min.js') }}"></script>
   <script src="{{ asset('assets/libs/sweetalert2/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ asset('assets/libs/toastify-js/src/toastify.js') }}"></script>
   <script src="{{ asset('assets/js/plugins.js') }}"></script>
   <script src="{{ asset('assets/js/custom.js') }}"></script>
 

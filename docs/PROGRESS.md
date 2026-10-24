@@ -1,5 +1,12 @@
 # TKBM Progress Tracker
 
+### [2026-10-24] fix: Audit Komprehensif Fungsional & UI 39 Modul (Parity CI3 & Fix Action Buttons)
+
+- **Scope**: Layouts, Master Modules, Pengaturan Pengguna, Dokumentasi Panduan, Feature Test Suite
+- **Files Changed**: `docs/migration/AUDIT_FINDINGS.md`, `app/Http/Controllers/PanduanController.php`, `resources/views/panduan.blade.php`, `routes/web.php`, `resources/views/layouts/app.blade.php`, `resources/views/pengaturan/pengguna/index.blade.php`, `resources/views/master/*/index.blade.php`, `tests/Feature/PanduanTest.php`, `tests/Feature/Master/MasterAllTest.php`, `tests/Feature/Pengaturan/PengaturanTest.php`
+- **Summary**: Menuntaskan audit komprehensif fungsional dan aksi tombol pada seluruh 39 modul `tkbm-lav` dengan acuan sistem CI3: (1) Menyusun laporan audit `docs/migration/AUDIT_FINDINGS.md`; (2) Mengatasi 404 dead-link navigasi sidebar dengan membuat `PanduanController`, rute `/panduan`, dan porting view `panduan.blade.php` (950 baris interaktif) dari CI3; (3) Menghilangkan dependensi CDN eksternal Toastify dengan melink `toastify.css` dan `toastify.js` lokal di `layouts/app.blade.php` untuk stabilitas offline; (4) Memperbaiki tombol Ubah Password pada Pengguna agar tidak menampilkan `undefined`; (5) Menambahkan event handler pemulihan data (`.btn-restore`) pada seluruh 9 view Master Data (`aktifitas`, `alat`, `catatan`, `client`, `dermaga`, `kapal`, `krk`, `pelabuhan`, `satuan`); (6) Membersihkan view usang legacy di master email; (7) Menambahkan test case otomatis sehingga seluruh 64 tests (341 assertions) berstatus 100% PASSING.
+- **Conversation ID**: 3a9289c1-55a3-4e8a-ba5f-152b7981b578
+
 ### [2026-10-24] feat: Porting Delta Fitur Mobile API (Edit Detail Laporan & Offline Sync Update)
 
 - **Scope**: Mobile API v1 Module (`routes/api.php`, `WorkordersController.php`, `SyncController.php`, `ApiTest.php`)

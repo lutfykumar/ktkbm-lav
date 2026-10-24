@@ -102,4 +102,27 @@ class PengaturanTest extends TestCase
         $resStats->assertJson(['status' => true]);
         $this->assertArrayHasKey('job_stats', $resStats->json());
     }
+
+    public function test_change_password_validation(): void
+    {
+        $user = $this->getAdminUser();
+
+        // Test password mismatch
+        $resMismatch = $this->actingAs($user)->postJson('/pengaturan/pengguna/change_password', [
+            'user_id' => $user->id,
+            'new_password' => 'secret123',
+            'confirm_password' => 'secret321',
+        ]);
+        $resMismatch->assertStatus(200);
+        $resMismatch->assertJson(['status' => false, 'msg' => 'Password dan konfirmasi password tidak sama']);
+
+        // Test password too short
+        $resShort = $this->actingAs($user)->postJson('/pengaturan/pengguna/change_password', [
+            'user_id' => $user->id,
+            'new_password' => '123',
+            'confirm_password' => '123',
+        ]);
+        $resShort->assertStatus(200);
+        $resShort->assertJson(['status' => false, 'msg' => 'Password baru minimal 6 karakter']);
+    }
 }

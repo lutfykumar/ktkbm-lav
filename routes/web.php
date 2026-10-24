@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PanduanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +24,7 @@ Route::get('/', function () {
 // Authenticated Routes
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/panduan', [PanduanController::class, 'index'])->name('panduan');
 
     // AJAX helpers
     Route::post('/ajax/search_menu', [AjaxController::class, 'searchMenu'])->name('ajax.search_menu');
