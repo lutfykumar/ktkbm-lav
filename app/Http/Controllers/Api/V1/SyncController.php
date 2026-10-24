@@ -307,21 +307,37 @@ class SyncController extends BaseApiController
 
                 $krk = DB::table('m_krk')->where('ID_KRK', $report['krk_id'])->first();
 
-                $newReportId = DB::table('t_work_order_detail')->insertGetId([
-                    'ID_WORK_ORDER'        => (int) $targetWoId,
-                    'ID_KRK'               => (int) $report['krk_id'],
-                    'NAMA_KRK'             => $krk?->NAMA,
-                    'HASIL'                => floatval($report['hasil']),
-                    'RANSUM'               => isset($report['ransum']) && $report['ransum'] !== null && $report['ransum'] !== '' && is_numeric($report['ransum']) ? (int) $report['ransum'] : null,
-                    'ID_SATUAN'            => $workorder->ID_SATUAN,
-                    'CATATAN'              => $report['catatan'] ?? null,
-                    'FOTO_KEGIATAN_BEFORE' => null,
-                    'FOTO_KEGIATAN_AFTER'  => null,
-                    'CREATED_BY'           => $userId,
-                    'UPDATED_BY'           => $userId,
-                    'CREATED_AT'           => $report['client_created_at'] ?? date('Y-m-d H:i:s'),
-                    'UPDATED_AT'           => date('Y-m-d H:i:s'),
-                ]);
+                $existingReportId = !empty($report['server_id']) ? (int) $report['server_id'] : (!empty($report['id']) ? (int) $report['id'] : null);
+
+                if (!empty($existingReportId)) {
+                    $updateData = [
+                        'ID_KRK'     => (int) $report['krk_id'],
+                        'NAMA_KRK'   => $krk?->NAMA,
+                        'HASIL'      => floatval($report['hasil']),
+                        'RANSUM'     => isset($report['ransum']) && $report['ransum'] !== null && $report['ransum'] !== '' && is_numeric($report['ransum']) ? (int) $report['ransum'] : null,
+                        'CATATAN'    => $report['catatan'] ?? null,
+                        'UPDATED_BY' => $userId,
+                        'UPDATED_AT' => date('Y-m-d H:i:s'),
+                    ];
+                    DB::table('t_work_order_detail')->where('ID_WORK_ORDER_DETAIL', $existingReportId)->update($updateData);
+                    $newReportId = $existingReportId;
+                } else {
+                    $newReportId = DB::table('t_work_order_detail')->insertGetId([
+                        'ID_WORK_ORDER'        => (int) $targetWoId,
+                        'ID_KRK'               => (int) $report['krk_id'],
+                        'NAMA_KRK'             => $krk?->NAMA,
+                        'HASIL'                => floatval($report['hasil']),
+                        'RANSUM'               => isset($report['ransum']) && $report['ransum'] !== null && $report['ransum'] !== '' && is_numeric($report['ransum']) ? (int) $report['ransum'] : null,
+                        'ID_SATUAN'            => $workorder->ID_SATUAN,
+                        'CATATAN'              => $report['catatan'] ?? null,
+                        'FOTO_KEGIATAN_BEFORE' => null,
+                        'FOTO_KEGIATAN_AFTER'  => null,
+                        'CREATED_BY'           => $userId,
+                        'UPDATED_BY'           => $userId,
+                        'CREATED_AT'           => $report['client_created_at'] ?? date('Y-m-d H:i:s'),
+                        'UPDATED_AT'           => date('Y-m-d H:i:s'),
+                    ]);
+                }
 
                 $woUpdate = [];
                 if (strtolower($workorder->STATUS) === 'open') {

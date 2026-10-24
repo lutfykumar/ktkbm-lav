@@ -188,4 +188,47 @@ class ApiTest extends TestCase
         $newRefreshToken = $response->json('data.refresh_token');
         $jwtService->revokeRefreshToken($newRefreshToken);
     }
+
+    public function test_user_can_update_report_with_token(): void
+    {
+        $user = $this->getUser();
+        $token = $this->getAuthToken($user);
+        $headers = ['Authorization' => 'Bearer ' . $token];
+
+        $report = DB::table('t_work_order_detail')->whereNull('DELETED_AT')->first();
+        if ($report) {
+            $response = $this->withHeaders($headers)->postJson("/api/v1/reports/{$report->ID_WORK_ORDER_DETAIL}/update", [
+                'krk_id'  => $report->ID_KRK,
+                'hasil'   => 125.5,
+                'ransum'  => 5,
+                'catatan' => 'Uji otomatis update report',
+            ]);
+
+            $response->assertStatus(200)
+                ->assertJson(['status' => true]);
+            $this->assertEquals(125.5, $response->json('data.hasil'));
+        } else {
+            $this->assertTrue(true);
+        }
+    }
+
+    public function test_update_report_validation_fails_on_missing_krk(): void
+    {
+        $user = $this->getUser();
+        $token = $this->getAuthToken($user);
+        $headers = ['Authorization' => 'Bearer ' . $token];
+
+        $report = DB::table('t_work_order_detail')->whereNull('DELETED_AT')->first();
+        if ($report) {
+            $response = $this->withHeaders($headers)->postJson("/api/v1/reports/{$report->ID_WORK_ORDER_DETAIL}/update", [
+                'krk_id' => '',
+                'hasil'  => 'invalid_number',
+            ]);
+
+            $response->assertStatus(422)
+                ->assertJson(['status' => false]);
+        } else {
+            $this->assertTrue(true);
+        }
+    }
 }

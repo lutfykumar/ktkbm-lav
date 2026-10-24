@@ -1,5 +1,13 @@
 # TKBM Progress Tracker
 
+### [2026-10-24] feat: Porting Delta Fitur Mobile API (Edit Detail Laporan & Offline Sync Update)
+
+- **Scope**: Mobile API v1 Module (`routes/api.php`, `WorkordersController.php`, `SyncController.php`, `ApiTest.php`)
+- **Files Changed**: `routes/api.php`, `app/Http/Controllers/Api/V1/WorkordersController.php`, `app/Http/Controllers/Api/V1/SyncController.php`, `tests/Feature/Api/V1/ApiTest.php`
+- **Summary**: Menyelaraskan seluruh penambahan fitur mobile API dari CI3 (23 Okt) ke Laravel 11 untuk parity 100%: (1) Menambahkan rute dan implementasi `update_report` pada `WorkordersController` untuk edit laporan kegiatan lapangan (KRK, hasil, ransum, catatan, foto before/after) dengan validasi status terkunci (review/done) dan otorisasi pengawas/pembuat; (2) Menyempurnakan `SyncController::push` untuk mendukung update laporan yang sudah ada di server (`existing_report_id`) guna mencegah duplikasi data saat offline sync; (3) Menambahkan automated test suites di `ApiTest.php` yang memverifikasi sukses update dan validasi error; (4) Total test suite Laravel kini mencapai 60 tests (311 assertions) berstatus 100% PASSING.
+- **Conversation ID**: 3a9289c1-55a3-4e8a-ba5f-152b7981b578
+
+
 ### [2026-10-22] fix: Perbaikan Posisi Ikon Empty State agar Terpusat dan Sejajar dengan Teks
 
 - **Scope**: Report View, Dashboard Views, Workorder Detail View

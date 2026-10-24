@@ -46,7 +46,9 @@ Route::prefix('v1')->group(function () {
 
         // Reports
         Route::match(['DELETE', 'POST'], 'reports/{id}', [WorkordersController::class, 'delete_report']);
+        Route::match(['POST', 'PUT', 'PATCH'], 'reports/{id}/update', [WorkordersController::class, 'update_report']);
         Route::post('reports/{id}/photos', [WorkordersController::class, 'upload_photos']);
+        Route::match(['POST', 'PUT', 'PATCH'], 'workorders/{id}/reports/{report_id}/update', [WorkordersController::class, 'update_report']);
 
         // Master Data
         Route::prefix('master')->group(function () {

@@ -600,6 +600,96 @@ class WorkordersController extends BaseApiController
     }
 
     /**
+     * POST/PUT/PATCH /api/v1/reports/{id}/update (or /api/v1/workorders/{id}/reports/{report_id}/update)
+     * Update detail report (KRK, hasil, ransum, catatan, optional photos)
+     * Allowed while WO status is open/progress
+     */
+    public function update_report(Request $request, $id = null, $report_id = null): JsonResponse
+    {
+        $targetReportId = $report_id ?? $id;
+
+        if (empty($targetReportId) || !is_numeric($targetReportId)) {
+            return $this->jsonError('ID laporan tidak valid.', 400);
+        }
+
+        $detail = DB::table('t_work_order_detail')->where('ID_WORK_ORDER_DETAIL', $targetReportId)->whereNull('DELETED_AT')->first();
+        if (!$detail) {
+            return $this->jsonError('Laporan tidak ditemukan.', 404);
+        }
+
+        $workorder = DB::table('t_work_order')->where('ID_WORK_ORDER', $detail->ID_WORK_ORDER)->whereNull('DELETED_AT')->first();
+        if (!$workorder) {
+            return $this->jsonError('Work Order tidak ditemukan.', 404);
+        }
+
+        // Access check: Admin, or report creator, or assigned pengawas of the WO
+        if (!$this->isAdmin($request)) {
+            $userId = $this->userId($request);
+            $isCreator = ($detail->CREATED_BY == $userId);
+            $isWoPengawas = (!empty($workorder->ID_PENGAWAS) && $workorder->ID_PENGAWAS == $userId);
+            if (!$isCreator && !$isWoPengawas) {
+                return $this->jsonError('Anda tidak memiliki akses untuk mengedit laporan ini.', 403);
+            }
+
+            // Check if WO is locked
+            if (in_array(strtolower($workorder->STATUS), ['review', 'done'])) {
+                return $this->jsonError('Tidak dapat mengedit laporan. Work Order sedang dalam proses review atau sudah selesai.', 403);
+            }
+        }
+
+        $krkId  = $request->input('krk_id', $detail->ID_KRK);
+        $hasil   = $request->input('hasil', $detail->HASIL);
+        $ransum  = $request->input('ransum', $detail->RANSUM);
+        $catatan = $request->input('catatan', $detail->CATATAN);
+
+        if (empty($krkId) || !is_numeric($krkId)) {
+            return $this->jsonError('KRK ID wajib diisi.', 422);
+        }
+
+        if ($hasil === null || $hasil === '' || !is_numeric($hasil)) {
+            return $this->jsonError('Hasil wajib diisi dan berupa angka.', 422);
+        }
+
+        // Handle photo uploads if any provided
+        $fotoBefore = $this->uploadPhoto($request, 'foto_before');
+        $fotoAfter  = $this->uploadPhoto($request, 'foto_after');
+
+        $krk = DB::table('m_krk')->where('ID_KRK', $krkId)->first();
+
+        try {
+            DB::beginTransaction();
+
+            $data = [
+                'ID_KRK'     => (int) $krkId,
+                'NAMA_KRK'   => $krk ? $krk->NAMA : $detail->NAMA_KRK,
+                'HASIL'      => floatval($hasil),
+                'RANSUM'     => ($ransum !== null && $ransum !== '' && is_numeric($ransum)) ? (int) $ransum : null,
+                'CATATAN'    => $catatan,
+                'UPDATED_BY' => $this->userId($request),
+                'UPDATED_AT' => date('Y-m-d H:i:s'),
+            ];
+
+            if (!empty($fotoBefore)) {
+                $data['FOTO_KEGIATAN_BEFORE'] = $fotoBefore;
+            }
+            if (!empty($fotoAfter)) {
+                $data['FOTO_KEGIATAN_AFTER'] = $fotoAfter;
+            }
+
+            DB::table('t_work_order_detail')->where('ID_WORK_ORDER_DETAIL', $targetReportId)->update($data);
+
+            DB::commit();
+
+            $updated = DB::table('t_work_order_detail')->where('ID_WORK_ORDER_DETAIL', $targetReportId)->first();
+
+            return $this->jsonSuccess('Laporan berhasil diperbarui', $this->formatReport($updated));
+        } catch (Exception $e) {
+            DB::rollBack();
+            return $this->jsonError('Terjadi kesalahan sistem saat memperbarui laporan: ' . $e->getMessage(), 500);
+        }
+    }
+
+    /**
      * POST /api/v1/reports/{id}/photos
      */
     public function upload_photos(Request $request, $id = null): JsonResponse
