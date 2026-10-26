@@ -64,6 +64,22 @@ class AuthenticationTest extends TestCase
         $response->assertSee('Dashboard');
     }
 
+    public function test_users_can_authenticate_with_remember_me(): void
+    {
+        $user = User::where('active', 1)->first();
+        $this->assertNotNull($user);
+
+        $response = $this->post('/login', [
+            'email' => $user->email,
+            'password' => 'bangchan',
+            'remember' => '1',
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $user->refresh();
+        $this->assertNotNull($user->getRememberToken());
+    }
+
     public function test_users_can_logout(): void
     {
         $user = User::where('active', 1)->first();
