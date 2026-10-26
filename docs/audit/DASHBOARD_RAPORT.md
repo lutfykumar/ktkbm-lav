@@ -1,6 +1,6 @@
 # 📋 BUKU RAPORT AUDIT DASHBOARD TKBM
 
-**Waktu Audit:** Senin, 26 Oktober 2026 19:34:39  
+**Waktu Audit:** Senin, 26 Oktober 2026 19:56:07  
 **Akun Penguji:** `Administrator` (`kumar.kokola@gmail.com`) — Role: admin  
 **Nilai Keseluruhan:** **100%** (Predikat: **Grade A**)  
 
@@ -16,11 +16,11 @@
 | **Activity** | 7 | 7 | 0 | 0 | 100% | 🟢 **A** |
 | **Master** | 72 | 72 | 0 | 0 | 100% | 🟢 **A** |
 | **Pengaturan** | 36 | 36 | 0 | 0 | 100% | 🟢 **A** |
-| **Logs** | 14 | 14 | 0 | 0 | 100% | 🟢 **A** |
+| **Logs** | 20 | 20 | 0 | 0 | 100% | 🟢 **A** |
 | **Report** | 3 | 3 | 0 | 0 | 100% | 🟢 **A** |
 | **Profile** | 5 | 5 | 0 | 0 | 100% | 🟢 **A** |
 | **Auth** | 10 | 10 | 0 | 0 | 100% | 🟢 **A** |
-| **TOTAL / RATA-RATA** | **170** | **170** | **0** | **0** | **100%** | **A** |
+| **TOTAL / RATA-RATA** | **176** | **176** | **0** | **0** | **100%** | **A** |
 
 ---
 
@@ -219,10 +219,12 @@
 </details>
 
 <details>
-<summary><b>Modul: Logs (14 Aksi) — Klik untuk melihat detail</b></summary>
+<summary><b>Modul: Logs (20 Aksi) — Klik untuk melihat detail</b></summary>
 
 | Method | Route | Controller Action | Status | Keterangan |
 | :--- | :--- | :--- | :---: | :--- |
+| `GET` | `/logs/dashboard` | `Logs\DashboardController@index` | ✅ PASS | 200 OK (View rendered successfully) |
+| `GET` | `/logs/dashboard/realtime` | `Logs\DashboardController@realtime` | ✅ PASS | 200 OK (Valid JSON API response) |
 | `GET` | `/logs/aktifitas` | `Logs\AktifitasController@index` | ✅ PASS | 200 OK (View rendered successfully) |
 | `GET` | `/logs/aktifitas/table` | `Logs\AktifitasController@table` | ✅ PASS | 200 OK (Valid JSON API response) |
 | `POST` | `/logs/aktifitas/detail` | `Logs\AktifitasController@detail` | ✅ PASS | 404 Handled (Route requires specific record ID/param) |
@@ -237,6 +239,10 @@
 | `GET` | `/logs/errors/get_data` | `Logs\ErrorsController@getData` | ✅ PASS | 200 OK (Valid JSON API response) |
 | `POST` | `/logs/errors/detail` | `Logs\ErrorsController@detail` | ✅ PASS | 404 Handled (Route requires specific record ID/param) |
 | `POST` | `/logs/errors/resolve` | `Logs\ErrorsController@resolve` | ✅ PASS | 200 OK (Valid JSON API response) |
+| `GET` | `/logs/aplikasi` | `Logs\AplikasiController@index` | ✅ PASS | 200 OK (View rendered successfully) |
+| `GET` | `/logs/aplikasi/table` | `Logs\AplikasiController@table` | ✅ PASS | 200 OK (Valid JSON API response) |
+| `GET` | `/logs/aplikasi/download` | `Logs\AplikasiController@download` | ✅ PASS | 200 OK (View rendered successfully) |
+| `POST` | `/logs/aplikasi/clear` | `Logs\AplikasiController@clear` | ✅ PASS | 200 OK (Valid JSON API response) |
 
 </details>
 

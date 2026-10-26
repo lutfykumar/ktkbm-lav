@@ -200,6 +200,12 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/delete_detail', [\App\Http\Controllers\ActivityController::class, 'delete_detail'])->name('delete_detail');
     });
 
+    // Logs: Dashboard (Unified Logs & Health Analytics Hub)
+    Route::prefix('logs/dashboard')->name('logs.dashboard.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Logs\DashboardController::class, 'index'])->name('index');
+        Route::get('/realtime', [\App\Http\Controllers\Logs\DashboardController::class, 'realtime'])->name('realtime');
+    });
+
     // Logs: User Activity
     Route::prefix('logs/aktifitas')->name('logs.aktifitas.')->group(function () {
         Route::get('/', [\App\Http\Controllers\Logs\AktifitasController::class, 'index'])->name('index');
@@ -228,6 +234,14 @@ Route::middleware(['auth'])->group(function () {
         Route::match(['get', 'post'], '/get_data', [\App\Http\Controllers\Logs\ErrorsController::class, 'getData'])->name('get_data');
         Route::post('/detail', [\App\Http\Controllers\Logs\ErrorsController::class, 'detail'])->name('detail');
         Route::post('/resolve', [\App\Http\Controllers\Logs\ErrorsController::class, 'resolve'])->name('resolve');
+    });
+
+    // Logs: Aplikasi (Laravel System Log Viewer)
+    Route::prefix('logs/aplikasi')->name('logs.aplikasi.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Logs\AplikasiController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], '/table', [\App\Http\Controllers\Logs\AplikasiController::class, 'table'])->name('table');
+        Route::get('/download', [\App\Http\Controllers\Logs\AplikasiController::class, 'download'])->name('download');
+        Route::post('/clear', [\App\Http\Controllers\Logs\AplikasiController::class, 'clear'])->name('clear');
     });
 });
 
