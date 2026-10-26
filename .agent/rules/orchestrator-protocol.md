@@ -17,6 +17,7 @@ When receiving user requests, the Orchestrator does not execute complex multi-la
 | **`agent-lav-backend`** | Laravel 12 (`tkbm-lav`) | Eloquent models, migrations, domain services, Spatie permissions, Form Requests, PHP 8.4+. |
 | **`agent-lav-frontend`** | Laravel UI (`tkbm-lav`) | Livewire, React components, Tailwind CSS v4, shadcn/ui, Lucide icons, `cn()` utility. |
 | **`agent-qa-security`** | Cross-Framework QA | CSRF tokens, XSS input filtering, authorization checks, regression testing, code audits. |
+| **`agent-dashboard-auditor`** | Web Dashboard QA | E2E Browser Subagent + HTTP Action Crawler, UI buttons/modals/tables audit, generates Buku Raport (`docs/audit/DASHBOARD_RAPORT.md`). |
 
 ---
 
