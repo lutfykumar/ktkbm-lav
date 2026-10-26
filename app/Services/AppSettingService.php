@@ -22,24 +22,35 @@ class AppSettingService
                 return $setting->value;
             }
 
-            // Fallback to s_appconfig
-            $config = \Illuminate\Support\Facades\DB::table('s_appconfig')
-                ->where('INDIKATOR', $key)
-                ->first();
+            // Also check key with underscore or dash variant
+            $altKey = str_contains($key, '_') ? str_replace('_', '-', $key) : str_replace('-', '_', $key);
+            $settingAlt = AppSetting::where('key', $altKey)->first();
+            if ($settingAlt) {
+                return $settingAlt->value;
+            }
 
-            return $config ? $config->VALUE : $default;
+            return $default;
         });
     }
 
     /**
-     * Get all theme configuration from s_appconfig
+     * Get all theme and layout configuration from app_settings
      */
     public function getThemeConfig(): array
     {
         return Cache::remember('theme_config_all', self::CACHE_TTL, function () {
-            return \Illuminate\Support\Facades\DB::table('s_appconfig')
-                ->pluck('VALUE', 'INDIKATOR')
+            $settings = AppSetting::whereIn('group', ['theme', 'seo'])
+                ->pluck('value', 'key')
                 ->toArray();
+
+            $config = [];
+            foreach ($settings as $key => $val) {
+                $config[$key] = $val;
+                $dashKey = str_replace('_', '-', $key);
+                $config[$dashKey] = $val;
+            }
+
+            return $config;
         });
     }
 
@@ -101,6 +112,7 @@ class AppSettingService
      */
     public function clearCache(): void
     {
+        Cache::forget('theme_config_all');
         $keys = AppSetting::pluck('key', 'group');
         foreach ($keys as $group => $key) {
             Cache::forget(self::CACHE_PREFIX . $key);
