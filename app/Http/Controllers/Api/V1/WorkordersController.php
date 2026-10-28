@@ -504,7 +504,13 @@ class WorkordersController extends BaseApiController
 
         $krkId = $request->input('krk_id');
         $hasil = $request->input('hasil');
+        if (is_string($hasil)) {
+            $hasil = str_replace(',', '.', trim($hasil));
+        }
         $ransum = $request->input('ransum');
+        if (is_string($ransum)) {
+            $ransum = trim($ransum);
+        }
         $catatan = $request->input('catatan');
 
         if (empty($krkId) || !is_numeric($krkId)) {
@@ -586,8 +592,24 @@ class WorkordersController extends BaseApiController
             return $this->jsonError('Laporan tidak ditemukan.', 404);
         }
 
+        $workorder = DB::table('t_work_order')->where('ID_WORK_ORDER', $detail->ID_WORK_ORDER)->whereNull('DELETED_AT')->first();
+        if (!$workorder) {
+            return $this->jsonError('Work Order tidak ditemukan.', 404);
+        }
+
+        // Access check: Admin, or report creator, or assigned pengawas of the WO
         if (!$this->isAdmin($request)) {
-            return $this->jsonError('Pengawas tidak memiliki izin untuk menghapus data laporan. Hubungi Admin Kantor.', 403);
+            $userId = $this->userId($request);
+            $isCreator = ($detail->CREATED_BY == $userId);
+            $isWoPengawas = (!empty($workorder->ID_PENGAWAS) && $workorder->ID_PENGAWAS == $userId);
+            if (!$isCreator && !$isWoPengawas) {
+                return $this->jsonError('Anda tidak memiliki akses untuk menghapus laporan ini.', 403);
+            }
+
+            // Check if WO is locked
+            if (in_array(strtolower($workorder->STATUS), ['review', 'done'])) {
+                return $this->jsonError('Tidak dapat menghapus laporan. Work Order sedang dalam proses review atau sudah selesai.', 403);
+            }
         }
 
         DB::table('t_work_order_detail')->where('ID_WORK_ORDER_DETAIL', $id)->update([
@@ -639,7 +661,13 @@ class WorkordersController extends BaseApiController
 
         $krkId  = $request->input('krk_id', $detail->ID_KRK);
         $hasil   = $request->input('hasil', $detail->HASIL);
+        if (is_string($hasil)) {
+            $hasil = str_replace(',', '.', trim($hasil));
+        }
         $ransum  = $request->input('ransum', $detail->RANSUM);
+        if (is_string($ransum)) {
+            $ransum = trim($ransum);
+        }
         $catatan = $request->input('catatan', $detail->CATATAN);
 
         if (empty($krkId) || !is_numeric($krkId)) {
@@ -757,7 +785,8 @@ class WorkordersController extends BaseApiController
             mkdir($uploadDir, 0777, true);
         }
 
-        $filename = md5(uniqid(rand(), true)) . '.' . $file->getClientOriginalExtension();
+        $ext = $file->getClientOriginalExtension() ?: ($file->guessExtension() ?: 'jpg');
+        $filename = md5(uniqid(rand(), true)) . '.' . $ext;
         $file->move($uploadDir, $filename);
 
         return "filemanager/activity/{$year}/{$month}/{$filename}";

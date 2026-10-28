@@ -37,3 +37,6 @@ Thumbs.db
 !/storage/framework/views/.gitignore
 /storage/logs/*
 !/storage/logs/.gitignore
+
+# Uploaded files
+/public/filemanager/
