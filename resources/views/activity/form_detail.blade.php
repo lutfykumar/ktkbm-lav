@@ -100,12 +100,21 @@ $wo = $workorder;
 
             <!-- Hasil -->
             <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
-              <label class="form-label required">Hasil</label>
-              <input type="number" class="form-control hasil-field" name="hasil[]" placeholder="0" step="1" min="0">
+              <label class="form-label required">Hasil (Tonase)</label>
+              <input type="number" class="form-control hasil-field" name="hasil[]" placeholder="0" step="0.001" min="0">
+            </div>
+
+            <!-- Ritase Truk -->
+            <div class="col-lg-2 col-md-3 col-sm-6 mb-2">
+              <label class="form-label">Ritase Truk <span class="text-muted">(Opsional)</span></label>
+              <div class="input-group">
+                <input type="number" class="form-control truck-field" name="jumlah_truck[]" placeholder="0" min="0" step="1">
+                <span class="input-group-text">Rit</span>
+              </div>
             </div>
 
             <!-- Ransum -->
-            <div class="col-lg-3 col-md-6 col-sm-12 mb-2">
+            <div class="col-lg-2 col-md-3 col-sm-6 mb-2">
               <label class="form-label">Ransum <span class="text-muted">(Opsional)</span></label>
               <div class="input-group">
                 <input type="number" class="form-control ransum-field" name="ransum[]" placeholder="0" min="0" step="1">

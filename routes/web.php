@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
         'krk' => \App\Http\Controllers\Master\KrkController::class,
         'pelabuhan' => \App\Http\Controllers\Master\PelabuhanController::class,
         'satuan' => \App\Http\Controllers\Master\SatuanController::class,
+        'tarif_upah' => \App\Http\Controllers\Master\TarifUpahController::class,
     ];
 
     foreach ($masterModules as $prefix => $controller) {
@@ -105,6 +106,26 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/update_payment', [\App\Http\Controllers\Accounting\InvoiceController::class, 'updatePayment'])->name('update_payment');
         Route::post('/cancel', [\App\Http\Controllers\Accounting\InvoiceController::class, 'cancel'])->name('cancel');
         Route::get('/print_invoice/{id}', [\App\Http\Controllers\Accounting\InvoiceController::class, 'printInvoice'])->name('print_invoice');
+    });
+
+    // Accounting: Upah & Kwitansi TKBM Routes
+    Route::prefix('accounting/upah')->name('accounting.upah.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'index'])->name('index');
+        Route::match(['get', 'post'], '/table', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'table'])->name('table');
+        Route::get('/create/{wo_id?}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'create'])->name('create');
+        Route::post('/pull_wo_data', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'pullWoData'])->name('pull_wo_data');
+        Route::post('/store', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'store'])->name('store');
+        Route::get('/detail/{id}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'detail'])->name('detail');
+        Route::get('/edit/{id}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'edit'])->name('edit');
+        Route::post('/update', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'update'])->name('update');
+        Route::post('/delete', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'delete'])->name('delete');
+        Route::post('/restore', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'restore'])->name('restore');
+        Route::post('/update_payment', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'updatePayment'])->name('update_payment');
+        Route::post('/cancel', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'cancel'])->name('cancel');
+        Route::post('/bridge_invoice', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'bridgeInvoice'])->name('bridge_invoice');
+        Route::get('/print_perhitungan/{id}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'printPerhitungan'])->name('print_perhitungan');
+        Route::get('/print_tally/{id}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'printTally'])->name('print_tally');
+        Route::get('/print_kwitansi/{id}', [\App\Http\Controllers\Accounting\UpahTkbmController::class, 'printKwitansi'])->name('print_kwitansi');
     });
 
     // Pengaturan: Roles

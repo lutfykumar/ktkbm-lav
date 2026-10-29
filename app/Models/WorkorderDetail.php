@@ -22,6 +22,7 @@ class WorkorderDetail extends Model
 
     protected $casts = [
         'HASIL' => 'float',
+        'JUMLAH_TRUCK' => 'integer',
         'RANSUM' => 'integer',
         'CREATED_AT' => 'datetime',
         'UPDATED_AT' => 'datetime',

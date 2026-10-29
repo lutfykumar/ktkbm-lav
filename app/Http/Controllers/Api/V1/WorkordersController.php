@@ -512,6 +512,7 @@ class WorkordersController extends BaseApiController
             $ransum = trim($ransum);
         }
         $catatan = $request->input('catatan');
+        $truck = $request->input('jumlah_truck', $request->input('truck', 0));
 
         if (empty($krkId) || !is_numeric($krkId)) {
             return $this->jsonError('KRK ID wajib diisi.', 422);
@@ -536,6 +537,7 @@ class WorkordersController extends BaseApiController
                 'ID_KRK'               => (int) $krkId,
                 'NAMA_KRK'             => $krk?->NAMA,
                 'HASIL'                => floatval($hasil),
+                'JUMLAH_TRUCK'         => is_numeric($truck) ? (int) $truck : 0,
                 'RANSUM'               => ($ransum !== null && $ransum !== '' && is_numeric($ransum)) ? (int) $ransum : null,
                 'ID_SATUAN'            => $workorder->ID_SATUAN,
                 'CATATAN'              => $catatan,
@@ -696,6 +698,11 @@ class WorkordersController extends BaseApiController
                 'UPDATED_BY' => $this->userId($request),
                 'UPDATED_AT' => date('Y-m-d H:i:s'),
             ];
+
+            if ($request->has('jumlah_truck') || $request->has('truck')) {
+                $truckVal = $request->input('jumlah_truck', $request->input('truck'));
+                $data['JUMLAH_TRUCK'] = is_numeric($truckVal) ? (int)$truckVal : 0;
+            }
 
             if (!empty($fotoBefore)) {
                 $data['FOTO_KEGIATAN_BEFORE'] = $fotoBefore;
@@ -891,6 +898,7 @@ class WorkordersController extends BaseApiController
             'krk_id'      => (int) $row->ID_KRK,
             'krk_name'    => $row->NAMA_KRK,
             'hasil'       => floatval($row->HASIL),
+            'jumlah_truck' => isset($row->JUMLAH_TRUCK) ? (int) $row->JUMLAH_TRUCK : 0,
             'ransum'      => isset($row->RANSUM) && $row->RANSUM !== null ? (int) $row->RANSUM : null,
             'catatan'     => $row->CATATAN,
             'foto_before' => !empty($row->FOTO_KEGIATAN_BEFORE) ? url($row->FOTO_KEGIATAN_BEFORE) : null,

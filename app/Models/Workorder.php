@@ -81,4 +81,9 @@ class Workorder extends Model
     {
         return $this->hasMany(WorkorderAlat::class, 'ID_WORK_ORDER', 'ID_WORK_ORDER');
     }
+
+    public function upahTkbm(): HasMany
+    {
+        return $this->hasMany(UpahTkbm::class, 'ID_WORK_ORDER', 'ID_WORK_ORDER');
+    }
 }

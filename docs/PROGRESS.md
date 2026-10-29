@@ -1,5 +1,45 @@
 # TKBM Progress Tracker
 
+### [2026-10-29] feat: Penyempurnaan 8 Temuan Review Modul Upah & Kwitansi TKBM (End-to-End Maturity)
+
+- **Scope**: Accounting Upah (`accounting/upah`), Master Tarif Upah (`master/tarif_upah`), Print Templates, Mobile App Flutter (`ktkbm-mobile`), Automated Test Suite
+- **Files Changed**:
+  - `app/Http/Controllers/Accounting/UpahTkbmController.php` (Handling HARIAN, balance validation, guards status paid, payment file validation)
+  - `resources/views/accounting/upah/form.blade.php` (Kolom Harian, realtime recalculation, badge indikator keseimbangan alokasi, submit guard)
+  - `resources/views/accounting/upah/detail.blade.php` (Kolom Harian, tombol Batalkan Dokumen dengan konfirmasi SweetAlert2)
+  - `resources/views/accounting/upah/print_perhitungan.blade.php` (Kolom & total Harian dinamis Foto 1)
+  - `resources/views/accounting/upah/print_kwitansi.blade.php` (Format A4 landscape & integrasi logo resmi KTKBM)
+  - `resources/views/accounting/upah/print_tally.blade.php` (Singkatan kode PBM dinamis pada lembar tally Foto 2)
+  - `lib/data/models/report/create_report_request.dart`, `lib/presentation/report/bloc/report_form_event.dart`, `lib/presentation/report/bloc/report_form_bloc.dart`, `lib/presentation/report/report_form_screen.dart` (Input Ritase Truk pada Flutter mobile app)
+  - `app/Http/Controllers/Master/TarifUpahController.php`, `resources/views/master/tarif_upah/index.blade.php`, `resources/views/master/tarif_upah/edit.blade.php` (CRUD Master Tarif Upah TKBM)
+  - `database/migrations/2026_10_29_000003_add_jumlah_harian_to_t_upah_tkbm_detail_table.php`
+  - `database/migrations/2026_10_29_000004_seed_master_tarif_upah_menu_and_permissions.php`
+  - `routes/web.php`
+  - `tests/Feature/Accounting/UpahTkbmTest.php` & `tests/Feature/Master/TarifUpahTest.php`
+- **Summary**: Menindaklanjuti dan menyelesaikan seluruh 8 temuan review implementasi modul Upah & Kwitansi TKBM: (1) Menyambungkan field `JUMLAH_HARIAN` secara penuh dari database, controller, form input, detail view, hingga cetak perhitungan; (2) Menerapkan validasi keseimbangan alokasi dana buruh + koperasi = total tagihan baik di frontend (real-time balance badge) maupun backend; (3) Menambahkan guard proteksi terhadap pembatalan atau penghapusan dokumen yang sudah berstatus LUNAS (`paid`) serta menambahkan tombol pembatalan resmi; (4) Menambahkan validasi upload berkas bukti pembayaran (MIME jpg, png, pdf max 5MB) dan pemastian direktori tujuan upload; (5) Menyelaraskan tata letak cetak kwitansi ke orientasi Landscape dengan logo dinamis K.TKBM; (6) Menjadikan singkatan kode PBM pada rekap tally truk dinamis berbasis nama client; (7) Mengintegrasikan input Ritase Truk (Rit) pada form laporan aplikasi mobile Flutter (`report_form_screen.dart`) terverifikasi 0 issues pada `flutter analyze`; (8) Membangun modul lengkap CRUD Master Tarif Upah TKBM (`master/tarif_upah`) beserta menu dan permission grup; (9) Menambah test cases komprehensif sehingga seluruh 81 tests (471 assertions) di Laravel 11 lulus 100% tanpa error.
+- **Conversation ID**: b3ee0b85-4ae7-4d93-ac21-0b40cfb6a2d7
+
+### [2026-10-29] feat: Implementasi Modul Upah & Kwitansi Resmi TKBM (Perhitungan Upah, Tally Truk, & Kwitansi K.TKBM)
+
+- **Scope**: Accounting Module (`accounting/upah`), Database Migrations, Service, Blade Views, 3 Print Templates, Mobile API & DTO
+- **Files Changed**:
+  - `database/migrations/2026_10_29_000001_create_upah_tkbm_tables.php`
+  - `database/migrations/2026_10_29_000002_seed_upah_tkbm_menu_and_permissions.php`
+  - `app/Models/TarifUpah.php`, `app/Models/UpahTkbm.php`, `app/Models/UpahTkbmDetail.php`, `app/Models/WorkorderDetail.php`, `app/Models/Workorder.php`
+  - `app/Services/UpahTkbmService.php`
+  - `app/Http/Controllers/Accounting/UpahTkbmController.php`
+  - `routes/web.php`
+  - `resources/views/accounting/upah/index.blade.php`, `form.blade.php`, `detail.blade.php`
+  - `resources/views/accounting/upah/print_perhitungan.blade.php` (Sesuai Foto 1 Lembar Perhitungan Upah TKBM)
+  - `resources/views/accounting/upah/print_tally.blade.php` (Sesuai Foto 2 Rekapitulasi Tally Truk & Tonase)
+  - `resources/views/accounting/upah/print_kwitansi.blade.php` (Sesuai Foto 3 Kwitansi Resmi K.TKBM Pelabuhan Gresik)
+  - `app/Http/Controllers/ActivityController.php` & `resources/views/activity/form_detail.blade.php`
+  - `app/Http/Controllers/Api/V1/WorkordersController.php` & `SyncController.php`
+  - `lib/data/models/report/create_report_request.dart` (Flutter `ktkbm-mobile`)
+  - `tests/Feature/Accounting/UpahTkbmTest.php`
+- **Summary**: Mengimplementasikan modul terpadu "Upah & Kwitansi TKBM" yang berdampingan dengan modul Invoice komersial existing: (1) Menyusun skema migrasi database `t_upah_tkbm`, `t_upah_tkbm_detail`, `m_tarif_upah`, serta menambahkan kolom `JUMLAH_TRUCK` pada `t_work_order_detail`; (2) Mendaftarkan menu navigasi dan permission hak akses di bawah grup `Accounting`; (3) Mengembangkan `UpahTkbmService` dengan fitur auto-pull data dari Work Order selesai, generator nomor dokumen internal & nomor dinas kwitansi (`.../KTKBM.Tgl/YYYY`), kalkulasi live multi-komponen upah, pembagian alokasi dana buruh vs koperasi, serta auto-bridge ke draft invoice komersial; (4) Merancang 3 template cetak dokumen resmi yang presisi (Perhitungan Upah, Tally Truk, Kwitansi K.TKBM Pelabuhan Gresik); (5) Mengintegrasikan field `jumlah_truck` pada form input activity dan API mobile sync; (6) Menambahkan automated test suite komprehensif (`UpahTkbmTest`) dengan total 77 tests (430 assertions) berstatus 100% PASSING.
+- **Conversation ID**: b3ee0b85-4ae7-4d93-ac21-0b40cfb6a2d7
+
 ### [2026-10-24] fix: Audit Komprehensif Fungsional & UI 39 Modul (Parity CI3 & Fix Action Buttons)
 
 - **Scope**: Layouts, Master Modules, Pengaturan Pengguna, Dokumentasi Panduan, Feature Test Suite

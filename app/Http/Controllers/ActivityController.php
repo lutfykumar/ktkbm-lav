@@ -173,6 +173,7 @@ class ActivityController extends Controller
 
         $krkIds = $request->input('krk_id');
         $hasilArr = $request->input('hasil');
+        $truckArr = $request->input('jumlah_truck', []);
         $ransumArr = $request->input('ransum');
         $catatanArr = $request->input('catatan');
         $tglLaporanArr = $request->input('tgl_laporan');
@@ -218,6 +219,7 @@ class ActivityController extends Controller
                     'ID_KRK' => $krkId,
                     'NAMA_KRK' => $krk ? $krk->NAMA : null,
                     'HASIL' => isset($hasilArr[$i]) ? (float)$hasilArr[$i] : 0,
+                    'JUMLAH_TRUCK' => (isset($truckArr[$i]) && is_numeric($truckArr[$i])) ? (int)$truckArr[$i] : 0,
                     'RANSUM' => (isset($ransumArr[$i]) && $ransumArr[$i] !== '' && is_numeric($ransumArr[$i])) ? (int)$ransumArr[$i] : null,
                     'ID_SATUAN' => $workorder->ID_SATUAN,
                     'CATATAN' => $catatanArr[$i] ?? null,
